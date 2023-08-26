@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Password Generator
+![image](https://github.com/saurabh1024/password-generator/assets/55682954/53731bdc-2294-4504-b23c-b5925e942c8b)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Demo : https://getmeapassword.netlify.com
+#
 
 ## Available Scripts
 
