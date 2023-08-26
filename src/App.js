@@ -3,7 +3,7 @@ import PasswordBox from './components/PasswordBox';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <h2>Password Generator</h2>
       <PasswordBox />
     </div>
