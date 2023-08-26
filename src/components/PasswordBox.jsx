@@ -1,24 +1,35 @@
 import Slider from './Slider'
+import { useState } from 'react'
+import { checkBoxDataArray, Generate_Password, Character_Length, Strength_ } from '../utils/constants'
+import usePassword from '../hooks/usePassword'
 import '../styles/PasswordBox.css'
-import { useEffect, useState } from 'react'
+
 const PasswordBox = () => {
     const [charLength, setCharLength] = useState(4)
-    const [password, setPassword] = useState("")
     const [copy, setCopy] = useState("copy")
-    const [checkBoxData, setCheckBoxData] = useState([
-        {id: 1, name:"Include Uppercase", value:false},
-        {id: 2, name:"Include Lowercase", value:false},
-        {id: 3, name:"Include Numbers", value:false},
-        {id: 4, name:"Include Symbols", value:false},
-    ])
+    const [checkBoxData, setCheckBoxData] = useState(checkBoxDataArray)
+    const [password, errorMsg, generatePassword] = usePassword()
 
     const handleGenerate = () => {
-        let pass = "1234"
-        setPassword(pass)
+        generatePassword(checkBoxData, charLength)
+    }
+    const getStrength = () => {
+        // can add more complex logic for checking strength
+        let length = password.length
+        if(length >= 15) return "ultra strong"
+        if(length >= 12) return "very strong"
+        else if(length >= 8) return "strong"
+        else if(length > 4) return "average"
+        else return "weak"
     }
     const handleCopy = () => {
-        setCopy("copied!")
-        console.log(password)
+        if(password){
+            navigator.clipboard.writeText(password)
+            setCopy("copied!")
+            setTimeout(()=>{
+                setCopy("copy")
+            },1500)
+        }
     }
     const handleCheck = (id) => {
         let newData = [...checkBoxData]
@@ -29,25 +40,18 @@ const PasswordBox = () => {
         })
         setCheckBoxData(newData)
     }
-
-    useEffect(()=>{
-        if(copy !== "copy"){
-            setTimeout(()=>{
-                setCopy("copy")
-            }, 1800)
-        }
-    },[copy])
+    
   return (
     <div className='box'>
-        <div className='passWordAndCopy'>
+        {password && <div className='passWordAndCopy'>
             <div className="password">{password}</div>
             <div className="copyBtn">
                 <button onClick={handleCopy}>{copy}</button>
             </div>
-        </div>
+        </div>}
         <div className="sliderContainer">
             <div className="lengthContainer">
-                <div>Character Length</div>
+                <div>{Character_Length}</div>
                 <div>{charLength}</div>
             </div>
             <Slider charLength={charLength} setCharLength={setCharLength} />
@@ -62,10 +66,13 @@ const PasswordBox = () => {
             
         </div>
         <div className="stregthContainer">
-            <div>Strength:</div>
-            <div className="strength">Medium</div>
+            <div>{Strength_}</div>
+            <div className="strength">{getStrength()}</div>
         </div>
-        <button onClick={handleGenerate} className='generateBtn'>Generate Password</button>
+
+        {/* error and generate password button */}
+        <div className='errorMsg'>{errorMsg}</div>
+        <button onClick={handleGenerate} className='generateBtn'>{Generate_Password}</button>
     </div>
   )
 }

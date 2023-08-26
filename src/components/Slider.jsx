@@ -7,7 +7,7 @@ const Slider = ({charLength, setCharLength}) => {
     }
   return (
     <div className='sliderContainer'>
-        <input type='range' min={4} max={20} value={charLength} onChange={(e)=>handleChange(e)} />
+        <input type='range' min={3} max={20} value={charLength} onChange={(e)=>handleChange(e)} />
     </div>
   )
 }
